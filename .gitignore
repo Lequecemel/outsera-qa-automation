@@ -1,0 +1,11 @@
+node_modules/
+.env
+playwright-report/
+test-results/
+reports/api-html/
+reports/api-results.json
+reports/cucumber-report.json
+reports/cucumber-report.html
+screenshots/*.png
+!screenshots/.gitkeep
+.DS_Store

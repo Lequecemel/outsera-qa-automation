@@ -1,0 +1,24 @@
+{
+  "name": "outsera-qa-automation",
+  "version": "1.0.0",
+  "description": "API and E2E automation challenge solution for Outsera QA assessment",
+  "private": true,
+  "scripts": {
+    "test:api": "playwright test tests/api",
+    "test:api:headed": "playwright test tests/api --headed",
+    "test:e2e": "cucumber-js --config cucumber.js",
+    "test:e2e:headed": "cross-env HEADLESS=false cucumber-js --config cucumber.js",
+    "test": "npm run test:api && npm run test:e2e",
+    "report:api": "playwright show-report reports/api-html",
+    "report:e2e": "node scripts/open-cucumber-report.js"
+  },
+  "devDependencies": {
+    "@cucumber/cucumber": "^11.3.0",
+    "@playwright/test": "^1.56.1",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.4.7"
+  },
+  "dependencies": {
+    "playwright": "^1.56.1"
+  }
+}

@@ -1,85 +1,79 @@
-# Outsera QA Automation
+# Automação de QA — Outsera
 
-Automated API and End-to-End test project prepared for the Outsera QA technical assessment. It demonstrates HTTP methods, positive/negative checks, BDD scenarios with Cucumber, Page Object Model, HTML reports, screenshots on E2E failures, and a GitHub Actions workflow.
+Projeto de automação de testes de API e End-to-End (E2E) desenvolvido para o desafio técnico de QA da Outsera. Demonstra métodos HTTP, validações positivas e negativas, cenários BDD com Cucumber, Page Object Model, relatórios HTML, captura de screenshots em falhas E2E e workflow de CI no GitHub Actions.
 
+## Escopo
 
-## Scope
+### Requisitos contemplados no repositório
 
-### Mandatory items represented in this repository
-- API: GET, POST, PUT, DELETE, response status/content-type/body checks, negative cases.
-- E2E login: successful login, invalid credentials, empty credentials.
-- E2E checkout: successful checkout and required-field validation.
-- CI: GitHub Actions workflow on pushes to `main`/`master` and pull requests.
-- Reports: Playwright HTML/JSON outputs and Cucumber HTML/JSON reports.
-- Screenshots: automatic screenshot capture on failed Cucumber scenarios.
+- **API:** GET, POST, PUT e DELETE; validações de status da resposta, content-type e body; cenários negativos.
+- **E2E de login:** login com sucesso, credenciais inválidas e credenciais vazias.
+- **E2E de checkout:** checkout com sucesso e validação de campos obrigatórios.
+- **CI:** workflow do GitHub Actions em pushes para `main`/`master` e pull requests.
+- **Relatórios:** relatórios HTML/JSON do Playwright e HTML/JSON do Cucumber.
+- **Screenshots:** captura automática de screenshots quando cenários Cucumber falham.
 
+## Tecnologias utilizadas
 
-## Stack
-
-- Node.js 22+ (LTS recommended)
+- Node.js 22+ (LTS recomendado)
 - JavaScript (CommonJS)
-- Playwright Test and Playwright browser automation
+- Playwright Test e automação de navegador com Playwright
 - Cucumber.js / Gherkin
-- Git and GitHub Actions
+- Git e GitHub Actions
 
+## Pré-requisitos
 
-## Prerequisites
+Instale o Node.js LTS, Git e um editor de código, como o VS Code. O Playwright instala um navegador Chromium local; não é necessário ter o Google Chrome instalado para executar a automação.
 
-Install Node.js LTS, Git, and a code editor such as VS Code. A local Chromium browser is installed by Playwright; Google Chrome is not required for the automation itself.
+## Configuração
 
-
-## Setup
-
-1. Clone this repository.
-2. Install dependencies:
+1. Clone este repositório.
+2. Instale as dependências:
 
    ```bash
    npm ci
    ```
-3. Install the Chromium browser:
+
+3. Instale o navegador Chromium:
 
    ```bash
    npx playwright install chromium
    ```
-4. (Optional) Copy `.env.example` to `.env` and customize values. The default demo credentials are intended for the Sauce Demo training site only.
 
+4. (Opcional) Copie `.env.example` para `.env` e personalize os valores. As credenciais padrão são destinadas exclusivamente ao site de treinamento Sauce Demo.
 
-## Run tests
+## Executando os testes
 
-### API tests
+### Testes de API
 
 ```bash
 npm run test:api
 ```
 
-The Playwright HTML report is written under `reports/api-html/`. JSON output is written to `reports/api-results.json` (ignored by Git).
+O relatório HTML do Playwright é gerado em `reports/api-html/`. O resultado em JSON é salvo em `reports/api-results.json` (arquivos ignorados pelo Git).
 
-### Cucumber E2E tests
+### Testes E2E com Cucumber
 
 ```bash
 npm run test:e2e
 ```
 
-To see the browser during test execution:
+Para visualizar o navegador durante a execução:
 
 ```bash
 npm run test:e2e:headed
 ```
 
-Cucumber output files are created in `reports/`. Failed scenarios attempt to save full-page screenshots under `screenshots/`.
+Os relatórios do Cucumber são gerados em `reports/`. Cenários que falharem tentam salvar screenshots de página inteira em `screenshots/`.
 
+## Sistemas de demonstração utilizados
 
-## Demo systems used
+- **API:** [Restful Booker](https://restful-booker.herokuapp.com)
+- **Aplicação web:** [Sauce Demo](https://www.saucedemo.com)
 
-- API: [Restful Booker](https://restful-booker.herokuapp.com/apidoc/index.html)
-- Web application: [Sauce Demo](https://www.saucedemo.com/)
+Esses são ambientes públicos de demonstração. Disponibilidade, limites de requisições e comportamentos podem mudar; portanto, podem ocorrer falhas ocasionais relacionadas ao ambiente.
 
-These are public demo environments. Availability, rate limits, and behavior may change; occasional environmental failures are possible.
-
-
-## Folder structure
-
-## Folder structure
+## Estrutura de pastas
 
 ```text
 .
@@ -94,14 +88,14 @@ These are public demo environments. Availability, rate limits, and behavior may 
 |   |-- CheckoutPage.js
 |   |-- InventoryPage.js
 |   |-- LoginPage.js
-|-- reports/
+|-- reports/                 # Relatórios gerados localmente
 |   |-- api-html/
 |   |-- api-results.json
 |   |-- cucumber-report.html
 |   |-- cucumber-report.json
 |-- scripts/
 |   |-- open-cucumber-report.js
-|-- screenshots/
+|-- screenshots/              # Evidências geradas em falhas
 |-- step-definitions/
 |   |-- checkout.steps.js
 |   |-- login.steps.js
@@ -119,45 +113,42 @@ These are public demo environments. Availability, rate limits, and behavior may 
 |-- package-lock.json
 |-- playwright.config.js
 |-- README.md
+|-- README.pt-BR.md
 ```
-
 
 ## CI/CD
 
-The workflow in `.github/workflows/ci.yml` runs on pushes to `main` or `master` and on pull requests. It checks out the repository, installs Node.js dependencies using `npm ci`, installs Chromium, runs API tests and Cucumber E2E scenarios, and uploads test reports and screenshots as GitHub Actions artifacts, even when tests fail. Artifacts are retained for 14 days.
+O workflow definido em `.github/workflows/ci.yml` é executado em pushes para `main` ou `master` e em pull requests. Ele faz checkout do repositório, instala as dependências do Node.js usando `npm ci`, instala o Chromium, executa os testes de API e os cenários E2E com Cucumber e envia os relatórios e screenshots como artefatos do GitHub Actions, inclusive quando os testes falham. Os artefatos ficam disponíveis por 14 dias.
 
+## Observações e limitações
 
-## Notes and limitations
+- Esta implementação é destinada a demonstração e testes; não deve ser utilizada contra serviços de produção.
+- O comportamento das respostas negativas da API pode variar. Se o serviço de demonstração compartilhado mudar seu contrato, ajuste as assertions com base na documentação atual da API e no comportamento observado.
+- O checkout de demonstração não processa pagamentos reais. Os testes validam apenas o fluxo de interface do site de exemplo, não a validação de cartões por um gateway de pagamento.
+- A suíte completa de testes foi executada localmente com sucesso. O workflow do GitHub Actions também foi executado e validado no runner do GitHub.
+- As evidências dos testes devem vir de execuções reais. Não apresente relatórios de exemplo ou fabricados como resultados reais.
 
-- This is a demo/testing implementation and should not be used against production services.
-- The API's negative-response behavior can vary. If the shared demo service changes its contract, adjust assertions based on the current API documentation and observed response.
-- The checkout demo does not process real payments. Checkout tests validate the sample site's UI flow only; they do not simulate a payment gateway's card validation.
-- The full test suite has been executed successfully locally. The GitHub Actions workflow is configured but still needs to be validated on a live GitHub Actions runner.
-- Test evidence should be generated by actual executions. Do not present sample or fabricated reports as real runs.
+## Comandos úteis
 
-
-## Useful commands
-
-| Command | Purpose |
+| Comando | Finalidade |
 |---|---|
-| `npm run test:api` | Execute API tests and generate Playwright reports |
-| `npm run test:e2e` | Execute Cucumber scenarios headlessly |
-| `npm run test:e2e:headed` | Execute Cucumber scenarios with a visible browser |
-| `npm run report:api` | Open the Playwright HTML report |
+| `npm run test:api` | Executa os testes de API e gera relatórios do Playwright |
+| `npm run test:e2e` | Executa os cenários Cucumber em modo headless |
+| `npm run test:e2e:headed` | Executa os cenários Cucumber com o navegador visível |
+| `npm run report:api` | Abre o relatório HTML do Playwright |
 
+## Checklist do desafio técnico
 
-## Assessment checklist
-
-- [x] API coverage for GET/POST/PUT/DELETE
-- [x] Positive and negative API scenarios
-- [x] Response status, headers, and body validations
-- [x] Login E2E scenarios using Gherkin
-- [x] Checkout E2E scenarios using Gherkin
-- [x] Page Object Model implementation
-- [x] Cucumber HTML and JSON reports
-- [x] Playwright HTML and JSON reports
-- [x] Screenshot capture on failed E2E scenarios
-- [x] GitHub Actions CI workflow configured
-- [x] Full API and E2E test suite executed successfully locally (8 API tests and 5 E2E scenarios passed)
-- [ ] Verify GitHub Actions execution on a live runner
-- [ ] Publish repository to GitHub
+- [x] Cobertura de API para GET/POST/PUT/DELETE
+- [x] Cenários positivos e negativos de API
+- [x] Validação de status, headers e body das respostas
+- [x] Cenários E2E de login utilizando Gherkin
+- [x] Cenários E2E de checkout utilizando Gherkin
+- [x] Implementação do Page Object Model
+- [x] Relatórios HTML e JSON do Cucumber
+- [x] Relatórios HTML e JSON do Playwright
+- [x] Captura de screenshots em cenários E2E com falha
+- [x] Workflow de CI com GitHub Actions configurado
+- [x] Suíte completa de API e E2E executada localmente (8 testes de API e 5 cenários E2E aprovados)
+- [x] Execução do GitHub Actions validada
+- [x] Repositório publicado no GitHub
